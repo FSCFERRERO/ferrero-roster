@@ -6,7 +6,7 @@
     <title>FSC Ferrero Roster</title>
     <style>
         body {
-            background-color: white;  /* Purple Background */
+            background-color: white;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative;  /* Required for absolute positioning of the image */
+            position: relative;
         }
 
         .container {
@@ -22,14 +22,24 @@
             border-radius: 15px;
             width: 90%;
             max-width: 1000px;
-        
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            color: #FF6600;  /* Orange Title */
+            color: #FF6600;
             text-align: center;
+        }
+
+        .tables-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .table-container {
+            width: 48%;
+            margin-bottom: 20px;
         }
 
         table {
@@ -49,12 +59,12 @@
         }
 
         th {
-            background-color: #660099;  /* Purple Header */
+            background-color: #660099;
             color: white;
         }
 
         td {
-            color: white;  /* White text for table content */
+            color: white;
         }
 
         #current-time {
@@ -64,31 +74,27 @@
             text-align: center;
         }
 
-        /* Position the image at the bottom right */
         .bottom-right-image {
             position: absolute;
             bottom: 10px;
             right: 10px;
-            width: 150px; /* Adjust the size of the image */
+            width: 150px;
             height: auto;
         }
     </style>
 </head>
 <body>
-  
     <div class="container">
         <h1>FSC Ferrero Roster</h1>
         <p id="current-time"></p>
-        <table id="roster-table">
-            <!-- The CSV data will appear here -->
-        </table>
+
+        <!-- Container for displaying tables side by side -->
+        <div id="tables-container" class="tables-row"></div>
     </div>
 
-    <!-- Image outside the container, positioned at the bottom right corner -->
     <img src="https://raw.githubusercontent.com/FSCFERRERO/ferrero-roster/main/FedEx_Supply_Chain_logo.svg.png" alt="FedEx Supply Chain Logo" class="bottom-right-image">
 
     <script>
-        // Function to convert CSV string to an array of objects
         function parseCSV(csv) {
             const rows = csv.split('\n');
             const result = [];
@@ -97,23 +103,18 @@
             for (let i = 1; i < rows.length; i++) {
                 const row = rows[i].split(',');
                 const obj = {};
-
                 for (let j = 0; j < headers.length; j++) {
                     obj[headers[j]] = row[j];
                 }
-
                 result.push(obj);
             }
-
             return result;
         }
 
-        // Function to display the table
-        function displayTable(data) {
-            const table = document.getElementById('roster-table');
-            table.innerHTML = ''; // Clear existing table content
-
+        function createTable(data) {
+            const table = document.createElement('table');
             const headers = Object.keys(data[0]);
+
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
             headers.forEach(header => {
@@ -135,18 +136,45 @@
                 tbody.appendChild(tr);
             });
             table.appendChild(tbody);
+
+            return table;
         }
 
-        // Function to get current time in Eastern Time
+        function displayTable(data) {
+            const tablesContainer = document.getElementById('tables-container');
+            tablesContainer.innerHTML = ''; // Clear existing content
+
+            const chunkSize = 17;
+            const chunks = [];
+
+            // Split the data into chunks of 15 rows
+            for (let i = 0; i < data.length; i += chunkSize) {
+                chunks.push(data.slice(i, i + chunkSize));
+            }
+
+            // Create tables for each chunk of data
+            chunks.forEach((chunk, index) => {
+                const tableContainer = document.createElement('div');
+                tableContainer.classList.add('table-container');
+                const table = createTable(chunk);
+                tableContainer.appendChild(table);
+                tablesContainer.appendChild(tableContainer);
+
+                // If we've added two tables, reset the container to create a new row
+                if ((index + 1) % 2 === 0) {
+                    tablesContainer.appendChild(document.createElement('div'));  // Adds a new row for the next pair
+                }
+            });
+        }
+
         function getEasternTime() {
             const date = new Date();
             const options = { timeZone: 'America/New_York', hour12: true };
             return date.toLocaleString('en-US', options);
         }
 
-        // Function to load data from GitHub (CSV file)
         function loadData() {
-            const csvUrl = 'https://raw.githubusercontent.com/FSCFERRERO/ferrero-roster/main/roster.csv';  // Replace with your GitHub URL
+            const csvUrl = 'https://raw.githubusercontent.com/FSCFERRERO/ferrero-roster/main/roster.csv';
 
             fetch(csvUrl)
                 .then(response => response.text())
@@ -154,7 +182,6 @@
                     const parsedData = parseCSV(csvData);
                     displayTable(parsedData);
 
-                    // Update time every time we load data
                     document.getElementById('current-time').textContent = 'Last updated: ' + getEasternTime();
                 })
                 .catch(error => {
@@ -162,12 +189,8 @@
                 });
         }
 
-        // Auto-refresh the table every 5 minutes
-        setInterval(loadData, 300000);  // 5 minutes = 300000 ms
-
-        // Initial load when the page is first visited
+        setInterval(loadData, 300000);
         loadData();
     </script>
 </body>
- 
 </html>
