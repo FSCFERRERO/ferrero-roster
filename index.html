@@ -6,36 +6,70 @@
     <title>FSC Ferrero Roster</title>
     <style>
         body {
-            background-color: white;
+            background-color: white;  /* Purple Background */
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
+
+        .container {
+            background-color: #660099;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         h1 {
-            color: #6A4C9C;  /* Purple */
+            color: #FF6600;  /* Orange Title */
+            text-align: center;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         table, th, td {
             border: 1px solid #ddd;
         }
+
         th, td {
             padding: 8px;
             text-align: left;
         }
+
+        th {
+            background-color: #660099;  /* Purple Header */
+            color: white;
+        }
+
+        td {
+            color: white;  /* White text for table content */
+        }
+
         #current-time {
             font-size: 1.2em;
             margin-top: 20px;
+            color: white;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>FSC Ferrero Roster</h1>
-    <p id="current-time"></p>
-    <table id="roster-table">
-        <!-- The CSV data will appear here -->
-    </table>
+    <div class="container">
+        <h1>FSC Ferrero Roster</h1>
+        <p id="current-time"></p>
+        <table id="roster-table">
+            <!-- The CSV data will appear here -->
+        </table>
+    </div>
 
     <script>
         // Function to convert CSV string to an array of objects
@@ -94,20 +128,26 @@
             return date.toLocaleString('en-US', options);
         }
 
-        // Function to load data from localStorage and update the page
+        // Function to load data from GitHub (CSV file)
         function loadData() {
-            const csvData = localStorage.getItem('csvData');
-            if (csvData) {
-                const parsedData = parseCSV(csvData);
-                displayTable(parsedData);
+            const csvUrl = 'https://raw.githubusercontent.com/yourusername/ferrero-roster/main/roster.csv';  // Replace with your GitHub URL
 
-                // Update time every time we load data
-                document.getElementById('current-time').textContent = 'Last updated: ' + getEasternTime();
-            }
+            fetch(csvUrl)
+                .then(response => response.text())
+                .then(csvData => {
+                    const parsedData = parseCSV(csvData);
+                    displayTable(parsedData);
+
+                    // Update time every time we load data
+                    document.getElementById('current-time').textContent = 'Last updated: ' + getEasternTime();
+                })
+                .catch(error => {
+                    console.error('Error fetching CSV:', error);
+                });
         }
 
-        // Auto-refresh the table every 10 minutes
-        setInterval(loadData, 120000);  // 10 minutes = 600000 ms
+        // Auto-refresh the table every 5 minutes
+        setInterval(loadData, 300000);  // 5 minutes = 300000 ms
 
         // Initial load when the page is first visited
         loadData();
