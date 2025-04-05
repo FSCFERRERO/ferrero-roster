@@ -24,15 +24,17 @@
             max-width: 1000px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
         }
 
         h1 {
             color: #FF6600;
             text-align: center;
-            width: 100%;
+        }
+
+        .tables-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
 
         .table-container {
@@ -70,7 +72,6 @@
             margin-top: 20px;
             color: white;
             text-align: center;
-            width: 100%;
         }
 
         .bottom-right-image {
@@ -87,8 +88,8 @@
         <h1>FSC Ferrero Roster</h1>
         <p id="current-time"></p>
 
-        <!-- Table containers for displaying data -->
-        <div id="tables-container"></div>
+        <!-- Container for displaying tables side by side -->
+        <div id="tables-container" class="tables-row"></div>
     </div>
 
     <img src="https://raw.githubusercontent.com/FSCFERRERO/ferrero-roster/main/FedEx_Supply_Chain_logo.svg.png" alt="FedEx Supply Chain Logo" class="bottom-right-image">
@@ -152,12 +153,17 @@
             }
 
             // Create tables for each chunk of data
-            chunks.forEach(chunk => {
+            chunks.forEach((chunk, index) => {
                 const tableContainer = document.createElement('div');
                 tableContainer.classList.add('table-container');
                 const table = createTable(chunk);
                 tableContainer.appendChild(table);
                 tablesContainer.appendChild(tableContainer);
+
+                // If we've added two tables, reset the container to create a new row
+                if ((index + 1) % 2 === 0) {
+                    tablesContainer.appendChild(document.createElement('div'));  // Adds a new row for the next pair
+                }
             });
         }
 
