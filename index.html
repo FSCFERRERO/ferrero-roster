@@ -140,45 +140,39 @@
             return table;
         }
 
-        function displayTable(data) {
-            const tablesContainer = document.getElementById('tables-container');
-            tablesContainer.innerHTML = ''; // Clear existing content
+function displayTable(data) {
+    const tablesContainer = document.getElementById('tables-container');
+    tablesContainer.innerHTML = ''; // Clear existing content
 
-            const chunkSize = 16;
-            const chunks = [];
+    const chunkSize = 16;
+    const chunks = [];
 
-            // Split the data into chunks of 16 rows
-            for (let i = 0; i < data.length; i += chunkSize) {
-                chunks.push(data.slice(i, i + chunkSize));
-            }
+    // Split the data into chunks of 16 rows
+    for (let i = 0; i < data.length; i += chunkSize) {
+        chunks.push(data.slice(i, i + chunkSize));
+    }
 
-            // Create tables for each chunk of data
-            chunks.forEach((chunk, index) => {
-                const tableContainer = document.createElement('div');
-                tableContainer.classList.add('table-container');
-                const table = createTable(chunk);
-                tableContainer.appendChild(table);
-                tablesContainer.appendChild(tableContainer);
+    // Create tables for each chunk of data
+    chunks.forEach((chunk, index) => {
+        const tableContainer = document.createElement('div');
+        tableContainer.classList.add('table-container');
+        const table = createTable(chunk);
+        tableContainer.appendChild(table);
+        tablesContainer.appendChild(tableContainer);
 
-                // If we've added two tables, reset the container to create a new row
-                if ((index + 1) % 2 === 0) {
-                    tablesContainer.appendChild(document.createElement('div'));  // Adds a new row for the next pair
-                }
-            });
-
-            // Check if there was an extra blank row (no need for empty row at the end)
-            if (chunks.length % 2 !== 0) {
-                // Prevent a blank row from being added when there's an odd number of chunks
-                tablesContainer.lastChild && tablesContainer.lastChild.nodeName === 'DIV' && tablesContainer.removeChild(tablesContainer.lastChild);
-            }
-
-            // Center align the table if only one table is displayed
-            if (chunks.length === 1) {
-                tablesContainer.style.justifyContent = 'center';  // Center the table if only one is present
-            } else {
-                tablesContainer.style.justifyContent = 'space-between';  // Reset to default layout if more than one table
-            }
+        // If we've added two tables, reset the container to create a new row
+        if ((index + 1) % 2 === 0) {
+            tablesContainer.appendChild(document.createElement('div'));  // Adds a new row for the next pair
         }
+    });
+
+    // Center align the table if only one table is displayed
+    if (chunks.length === 1) {
+        tablesContainer.style.justifyContent = 'center';  // Center the table if only one is present
+    } else {
+        tablesContainer.style.justifyContent = 'space-between';  // Reset to default layout if more than one table
+    }
+}
 
         function getEasternTime() {
             const date = new Date();
