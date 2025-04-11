@@ -1,17 +1,3 @@
-# ferrero-roster
-FEDEX ID	ASSIGNED FUNCTION
-4634477	,REPACK
-4723930	,RAW
-4609087	,FNT
-4608744	,CASE PICK
-4666288	,INT
-3186433	,LINK
-3186260	,FNT
-2783957	,RAW
-4624219	,FNT
-2784285	,FNT
-2783516	,LOADING
-2783464	,FNT
-3185966	,CASE PICK
-5756399	,FNT
-2783489	,DOCK LEAD
+Click on Roster.csv, then the pen on the right top corner to edit..
+EVERY row must have two texts separated by a comma ,
+Once you are done hit commit changes -> commit to publish. takes 5 minutes
