@@ -1,23 +1,30 @@
 FEDEX ID ,ASSIGNED FUNCTION
-4377773	,FNT
-5696586	,RAW
-6409243	,LINK
-4625101	,FNT
-8961788	,FNT
-5965396	,FNT
-8961798	,FNT
-8961863	,FNT
-8961818	,FNT
-8961808	,FNT
-2783479	,FNT
-4619652	,FNT
-4600747	,FNT
-2784638	,RAW
-2783998	,FNT
-4625188	,FNT
-8992835	,FNT
-8993606	,LOADING
-8993246	,FNT
-8993431	,CASE PICK
-8992773	,FNT
-8993314	,FNT
+	Main shift	Additional shift members	Additional shift members			** add or remove a shift from the yellow bar to include or exclude TMs assigned to tasks from the shift
+Shift:	NIGHTS	AFTERNOONS				
+						
+						
+						
+						
+FEDEX ID	ASSIGNED FUNCTION					
+4377773	,FNT					
+5696586	,RAW					
+4625101	,LINK					
+8961788	,FNT					
+5965396	,FNT					
+8961798	,FNT					
+8961863	,FNT					
+8961818	,FNT					
+8961808	,FNT					
+2783479	,FNT					
+4619652	,FNT					
+4600747	,FNT					
+2784638	,RAW					
+2783998	,FNT					
+4625188	,FNT					
+8992835	,FNT					
+8993606	,LOADING					
+8993246	,FNT					
+8993431	,CASE PICK					
+8992773	,FNT					
+8993314	,FNT					
+						
